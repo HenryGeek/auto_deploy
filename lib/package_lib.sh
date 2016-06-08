@@ -96,13 +96,13 @@ function install_package_deps {
     for binary in ${package_deps["binary"]}
     do
         package_name=$(yum whatprovides "*bin/$binary" | \
-            awk -F: -v regex="$package_regex" 'BEGIN{r=regex}$1 ~ r{print $1;exit}')
+            awk -F: -v regex="$package_regex" 'BEGIN{r=regex}$(NF-1) ~ r{print $(NF-1);exit}')
         if [ -n "$package_name" ];then
             [ "$DEBUG" == "true" ] && echo "Info: installing package $package_name"
             yum -q -e 1 -y install $package_name  &>/dev/null
             [ $? -ne 0 ] && echo "Error: some errors happened while installing package $package" && exit 1
         else
-            echo "Error: no package_name from yum provides, check package_regex $package_regex"
+            echo "Error: no package_name from yum provides for $binary, check package_regex $package_regex"
             exit 1
         fi
     done
