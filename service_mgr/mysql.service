@@ -1,0 +1,32 @@
+service_root_path=/home/wspace/mysql
+basedir=/home/wspace/mysql
+bindir=/home/wspace/mysql/bin
+sbindir=/home/wspace/mysql/sbin
+etcdir=/home/wspace/mysql/etc
+rundir=/home/wspace/mysql/run
+lockdir=/home/wspace/mysql/run
+piddir=/home/wspace/mysql/run
+service_name=mysql
+service_binary_name=mysqld
+service_binary_path=$bindir/mysqld
+service_pidfile_path=$piddir/mysqld.pid
+service_conffile_path=$etcdir/my.cnf
+service_lock_path=$lockdir/mysqld.lock
+options=--defaults-file=$etcdir/my.cnf
+start_cmd="$bindir/$service_binary_name $options"
+mode=$1
+
+case "$mode" in 
+    'start')
+        cd $basedir
+        echo "Starting $service_name"
+        if test -x /;then
+           $start_cmd & 
+        fi
+        ;;
+    'stop')
+        if test -s "$service_pidfile_path";then
+            echo $service_pidfile_path
+        fi
+        ;;
+esac

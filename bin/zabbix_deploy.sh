@@ -23,6 +23,11 @@ install_package_deps zabbix_deps
         maybe you don't create user wspace" && exit 1
 cd $build_dir_path/$zabbix_build_dir_name
 
-./configure --prefix=$deploy_root_path  --with-mysql \
+./configure --prefix=$deploy_root_path/zabbix  \
+    --with-mysql=$deploy_root_path/mysql/bin/mysql_config \
+    --bindir=$deploy_root_path/zabbix/sbin \
+    --sbindir=$deploy_root_path/zabbix/bin \
+    --sysconfdir=$deploy_root_path/zabbix/etc \
     --enable-server --enable-proxy --enable-agent
 
+make && make install

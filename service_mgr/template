@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+deploy_root_path=/home/wspace
+service_name=$1
+service_binary_name=$2
+service_conf_name=$3
+options=$4
+
+function usage {
+    echo "Usage: $(basename $0) service_name service_binary_name service_conf_name options"
+    echo "Note: options with white space should be between two double quotes"
+    exit 1
+}
+
+[ -z "$service_name" -o -z "$service_binary_name" \
+    -o -z "$options" -o -z "$service_conf_name" ] &&  usage
+
+service_root_path=$deploy_root_path/$service_name
+
+cat <<EOF > $service_name.service
+service_root_path=$service_root_path
+basedir=$service_root_path
+bindir=$service_root_path/bin
+sbindir=$service_root_path/sbin
+etcdir=$service_root_path/etc
+rundir=$service_root_path/run
+lockdir=$service_root_path/run
+piddir=$service_root_path/run
+service_name=$service_name
+service_binary_name=$service_binary_name
+service_binary_path=\$bindir/$service_binary_name
+service_pidfile_path=\$piddir/${service_binary_name}.pid
+service_conffile_path=\$etcdir/$service_conf_name
+service_lock_path=\$lockdir/${service_binary_name}.lock
+options=$options
+start_cmd="\$bindir/\$service_binary_name \$options"
+mode=\$1
+
+case "\$mode" in 
+    'start')
+        cd \$basedir
+        echo "Starting \$service_name"
+        if test -x $bindir/$service_binary;then
+           \$start_cmd & 
+        fi
+        ;;
+    'stop')
+        if test -s "\$service_pidfile_path";then
+            echo \$service_pidfile_path
+        fi
+        ;;
+esac
+EOF
