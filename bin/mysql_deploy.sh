@@ -47,6 +47,8 @@ cmake   -D CMAKE_INSTALL_PREFIX=$deploy_root_path/mysql \
         -D CMAKE_CXX_COMPILER=$(which g++) \
         -DDOWNLOAD_BOOST=1 -DWITH_BOOST=$build_dir_path/$boost_package_name ..
 
+mysql-boost-5.7.14.tar.gz
+cmake   -D CMAKE_INSTALL_PREFIX=$deploy_root_path/mysql         -D SYSCONFDIR=etc         -D INSTALL_BINDIR=bin         -D INSTALL_SBINDIR=sbin         -D DEFAULT_CHARSET=utf8         -D DEFAULT_COLLATION=utf8_general_ci         -D WITH_EXTRA_CHARSETS=all         -D WITH_INNOBASE_STORAGE_ENGINE=1         -D WITH_MYISAM_STORAGE_ENGINE=1          -D MYSQL_DATADIR=data               -D CMAKE_C_COMPILER=$(which gcc)         -D CMAKE_CXX_COMPILER=$(which g++)      -DWITH_BOOST=../boost  ..
 make && make install
 
 
